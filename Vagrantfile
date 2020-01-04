@@ -1,18 +1,26 @@
 VAGRANTFILE_API_VERSION = "2"
 VAGRANT_DISABLE_VBOXSYMLINKCREATE = "1"
+
+# All disks that are added as second harddisk to the virtual machines.
 file_to_disk1 = './disk-0-1.vdi'
 file_to_disk2 = './disk-0-2.vdi'
 file_to_disk3 = './disk-0-3.vdi'
+file_to_disk4 = './disk-0-4.vdi'
+file_to_disk5 = './disk-0-5.vdi'
+
+# Vagrant configuration
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 # Use same SSH key for each machine
 config.ssh.insert_key = false
 config.vm.box_check_update = false
 
+# Configure the first VM, which acts as a repository.
 config.vm.define "repo" do |repo|
   repo.vm.box = "rdbreak/rhel8repo"
+# Disabled vm.hostname because Vagrant also updates /etc/hosts when using this option.
 #  repo.vm.hostname = "repo.example.com"
   repo.vm.provision :shell, :inline => "sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config; sudo systemctl restart sshd;", run: "always"
-  repo.vm.provision :shell, :inline => "yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm -y; sudo yum install -y sshpass python3-pip python3-devel httpd sshpass vsftpd createrepo", run: "always"
+  repo.vm.provision :shell, :inline => "yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm -y; sudo yum install -y sshpass python3-pip python3-devel httpd sshpass vsftpd createrepo", run: "always"
   repo.vm.provision :shell, :inline => " python3 -m pip install -U pip ; python3 -m pip install pexpect; python3 -m pip install ansible", run: "always"
   repo.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: ".git/"
   repo.vm.network "private_network", ip: "192.168.55.199"
@@ -83,18 +91,49 @@ config.vm.define "node3" do |node3|
     SHELL
     node3.vm.synced_folder ".", "/vagrant"
 end
-#config.vm.define "node4" do |node4|
-#  node4.vm.box = "rdbreak/rhel8node"
-##  node4.vm.hostname = "node4.example.com"
-#  node4.vm.network "private_network", ip: "192.168.55.204"
-#  node4.vm.provision :shell, :inline => "sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config; systemctl restart sshd;", run: "always"
-#  node4.vm.provision :shell, :inline => "yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm -y; sudo yum install -y sshpass python3-pip python3-devel httpd sshpass vsftpd createrepo", run: "always"
-#  node4.vm.provision :shell, :inline => "python3 -m pip install -U pip --user; python3 -m pip install pexpect --user;python3 -m pip install ansible --user", run: "always", privileged: "false"
-#  node4.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: ".git/"
-#  node4.vm.provider "virtualbox" do |node4|
-#    node4.memory = "1024"
-#end
-#end
+
+config.vm.define "node4" do |node4|
+  node4.vm.box = "rdbreak/rhel8node"
+#  node4.vm.hostname = "node4.example.com"
+  node4.vm.network "private_network", ip: "192.168.55.204"
+  node4.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: ".git/"
+  node4.vm.provider "virtualbox" do |node4|
+    node4.memory = "512"
+
+    if not File.exist?(file_to_disk4)
+      node4.customize ['createhd', '--filename', file_to_disk4, '--variant', 'Fixed', '--size', 5 * 1024]
+    end
+    node4.customize ['storagectl', :id, '--name', 'SATA Controller', '--add', 'sata', '--portcount', 2]
+    node4.customize ['storageattach', :id,  '--storagectl', 'SATA Controller', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', file_to_disk4]
+  end
+
+    node4.vm.provision "shell", inline: <<-SHELL
+    yes| sudo mkfs.ext4 /dev/sdb
+    SHELL
+    node4.vm.synced_folder ".", "/vagrant"
+end
+
+config.vm.define "node5" do |node5|
+  node5.vm.box = "rdbreak/rhel8node"
+#  node5.vm.hostname = "node5.example.com"
+  node5.vm.network "private_network", ip: "192.168.55.205"
+  node5.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: ".git/"
+  node5.vm.provider "virtualbox" do |node5|
+    node5.memory = "512"
+
+    if not File.exist?(file_to_disk5)
+      node5.customize ['createhd', '--filename', file_to_disk5, '--variant', 'Fixed', '--size', 5 * 1024]
+    end
+    node5.customize ['storagectl', :id, '--name', 'SATA Controller', '--add', 'sata', '--portcount', 2]
+    node5.customize ['storageattach', :id,  '--storagectl', 'SATA Controller', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', file_to_disk5]
+  end
+
+    node5.vm.provision "shell", inline: <<-SHELL
+    yes| sudo mkfs.ext4 /dev/sdb
+    SHELL
+    node5.vm.synced_folder ".", "/vagrant"
+end
+
 config.vm.define "control" do |control|
   control.vm.box = "rdbreak/rhel8node"
 #  control.vm.hostname = "control.example.com"

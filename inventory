@@ -8,3 +8,7 @@ node1.example.com ansible_host=192.168.55.201 ansible_user=vagrant ansible_ssh_p
 node2.example.com ansible_host=192.168.55.202 ansible_user=vagrant ansible_ssh_pass=vagrant ansible_python_interpreter=/usr/bin/python3
 [node3]
 node3.example.com ansible_host=192.168.55.203 ansible_user=vagrant ansible_ssh_pass=vagrant ansible_python_interpreter=/usr/bin/python3
+[node4]
+node4.example.com ansible_host=192.168.55.204 ansible_user=vagrant ansible_ssh_pass=vagrant ansible_python_interpreter=/usr/bin/python3
+[node5]
+node5.example.com ansible_host=192.168.55.205 ansible_user=vagrant ansible_ssh_pass=vagrant ansible_python_interpreter=/usr/bin/python3

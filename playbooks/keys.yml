@@ -32,6 +32,26 @@
     become: yes
     become_user: user
     ignore_errors: yes
+  - name: Sending Key to node4
+    expect:
+      command: ssh-copy-id -i /home/user/.ssh/id_rsa.pub user@node4.example.com
+      responses:
+        'Are you sure you want to continue connecting': 'yes'
+        'password': 'password'
+      timeout: 10
+    become: yes
+    become_user: user
+    ignore_errors: yes
+  - name: Sending Key to node5
+    expect:
+      command: ssh-copy-id -i /home/user/.ssh/id_rsa.pub user@node5.example.com
+      responses:
+        'Are you sure you want to continue connecting': 'yes'
+        'password': 'password'
+      timeout: 10
+    become: yes
+    become_user: user
+    ignore_errors: yes
   - name: Welcome to the RHCE 8 Study/Test Environment!
     debug:
       msg:
@@ -40,6 +60,8 @@
         - '- Node 1 - 192.168.55.201'
         - '- Node 2 - 192.168.55.202'
         - '- Node 3 - 192.168.55.203'
+        - '- Node 4 - 192.168.55.204'
+        - '- Node 5 - 192.168.55.205'
         - '- Username/Password - vagrant/vagrant'
         - '--------------------------------------------------'
         - '- For root - use `sudo` or `sudo su`'
