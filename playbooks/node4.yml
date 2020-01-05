@@ -8,12 +8,12 @@
     command: hostnamectl set-hostname node4.example.com
   - name: Creating Ansible User
     user:
-      name: user
+      name: automation
       shell: /bin/bash
       groups: wheel
       append: yes
   - name: Changing User Password
-    shell: echo password | sudo passwd user --stdin
+    shell: echo password | sudo passwd automation --stdin
   - name: Disabling services
     selinux:
       state: disabled

@@ -8,12 +8,12 @@
     command: hostnamectl set-hostname control.example.com
   - name: Creating Ansible User
     user:
-      name: user
+      name: automation
       shell: /bin/bash
       groups: wheel
       append: yes
   - name: Changing User Password
-    shell: echo password | sudo passwd user --stdin
+    shell: echo password | sudo passwd automation --stdin
   - name: Fixing Resolv File
     shell: echo 'nameserver 8.8.8.8' > /etc/resolv.conf
   - name: Fixing hosts file
@@ -102,9 +102,9 @@
   - name: Reloaded Network.
     shell: nmcli con up "System eth1"
   - name: Generating RSA Key
-    command : ssh-keygen -q -t rsa -f /home/user/.ssh/id_rsa -C "" -N ""
+    command : ssh-keygen -q -t rsa -f /home/automation/.ssh/id_rsa -C "" -N ""
     become: yes
-    become_user: user
+    become_user: automation
   - name: Disabling services
     selinux:
       state: disabled
