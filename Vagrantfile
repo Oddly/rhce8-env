@@ -22,7 +22,7 @@ config.vm.define "repo" do |repo|
   repo.vm.provision :shell, :inline => "sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config; sudo systemctl restart sshd;", run: "always"
   repo.vm.provision :shell, :inline => "yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm -y; sudo yum install -y sshpass python3-pip python3-devel httpd sshpass vsftpd createrepo", run: "always"
   repo.vm.provision :shell, :inline => " python3 -m pip install -U pip ; python3 -m pip install pexpect; python3 -m pip install ansible", run: "always"
-  repo.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: ".git/"
+  repo.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: "disk-*"
   repo.vm.network "private_network", ip: "192.168.55.199"
 
   repo.vm.provider "virtualbox" do |repo|
@@ -34,7 +34,7 @@ config.vm.define "node1" do |node1|
   node1.vm.box = "rdbreak/rhel8node"
 #  node1.vm.hostname = "node1.example.com"
   node1.vm.network "private_network", ip: "192.168.55.201"
-  node1.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: ".git/"
+  node1.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: "disk-*"
   node1.vm.provider "virtualbox" do |node1|
     node1.memory = "512"
 
@@ -55,7 +55,7 @@ config.vm.define "node2" do |node2|
   node2.vm.box = "rdbreak/rhel8node"
 #  node2.vm.hostname = "node2.example.com"
   node2.vm.network "private_network", ip: "192.168.55.202"
-  node2.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: ".git/"
+  node2.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: "disk-*"
   node2.vm.provider "virtualbox" do |node2|
     node2.memory = "512"
 
@@ -75,7 +75,7 @@ config.vm.define "node3" do |node3|
   node3.vm.box = "rdbreak/rhel8node"
 #  node3.vm.hostname = "node3.example.com"
   node3.vm.network "private_network", ip: "192.168.55.203"
-  node3.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: ".git/"
+  node3.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: "disk-*"
   node3.vm.provider "virtualbox" do |node3|
     node3.memory = "512"
 
@@ -96,7 +96,7 @@ config.vm.define "node4" do |node4|
   node4.vm.box = "rdbreak/rhel8node"
 #  node4.vm.hostname = "node4.example.com"
   node4.vm.network "private_network", ip: "192.168.55.204"
-  node4.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: ".git/"
+  node4.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: "disk-*"
   node4.vm.provider "virtualbox" do |node4|
     node4.memory = "512"
 
@@ -117,7 +117,7 @@ config.vm.define "node5" do |node5|
   node5.vm.box = "rdbreak/rhel8node"
 #  node5.vm.hostname = "node5.example.com"
   node5.vm.network "private_network", ip: "192.168.55.205"
-  node5.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: ".git/"
+  node5.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: "disk-*"
   node5.vm.provider "virtualbox" do |node5|
     node5.memory = "512"
 
@@ -141,7 +141,7 @@ config.vm.define "control" do |control|
   control.vm.provider :virtualbox do |control|
     control.customize ['modifyvm', :id,'--memory', '2048']
     end
-  control.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: ".git/"
+  control.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: "disk-*"
   control.vm.provision :ansible_local do |ansible|
   ansible.playbook = "/vagrant/playbooks/master.yml"
   ansible.install = false

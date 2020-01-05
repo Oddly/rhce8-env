@@ -108,6 +108,13 @@
   - name: Disabling services
     selinux:
       state: disabled
+  - name: Create SSHFS directory for post-playbooks
+    file:
+      path: /mnt/postplay
+      state: directory
+      mode: 0755
+      owner: vagrant
+      group: vagrant 
   - name: Creating Welcome Message
     file:
       path: /etc/profile.d/welcome.sh

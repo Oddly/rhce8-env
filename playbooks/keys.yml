@@ -15,6 +15,7 @@
   - name: Sending Key to node2
     expect:
       command: ssh-copy-id -i /home/automation/.ssh/id_rsa.pub automation@node2.example.com 
+      responses:
         'Are you sure you want to continue connecting': 'yes'
         'password': 'devops'
       timeout: 10
