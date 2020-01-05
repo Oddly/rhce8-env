@@ -13,7 +13,7 @@
       groups: wheel
       append: yes
   - name: Changing User Password
-    shell: echo password | sudo passwd automation --stdin
+    shell: echo devops | sudo passwd automation --stdin
   - name: Fixing Resolv File
     shell: echo 'nameserver 8.8.8.8' > /etc/resolv.conf
   - name: Fixing hosts file

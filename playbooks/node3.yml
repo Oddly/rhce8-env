@@ -13,7 +13,7 @@
       groups: wheel
       append: yes
   - name: Changing User Password
-    shell: echo password | sudo passwd automation --stdin
+    shell: echo devops | sudo passwd automation --stdin
   - name: Disabling services
     selinux:
       state: disabled
