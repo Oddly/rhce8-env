@@ -17,10 +17,6 @@
       path: /home/automation/.ssh/id_rsa
       size: 2048
 
-  - name: Register public key of node
-    command: cat /home/automation/.ssh/id_rsa.pub
-    register: pub_key_node
-
   - name: Register public key of control
     command: cat /home/automation/.ssh/id_rsa.pub
     register: pub_key_control
@@ -32,43 +28,6 @@
       user: automation
       state: present
       key: "{{ pub_key_control.stdout }}"
-
-  - name: Make known_hosts file
-    file:
-      state: touch
-      path: /home/automation/.ssh/known_hosts
-      mode: '0644'
-    delegate_to: 127.0.0.1
-    run_once: true
-
-  - name: Remove old hosts from known_hosts on control
-    known_hosts:
-      state: absent
-      path: /home/automation/.ssh/known_hosts
-      name: "{{ansible_hostname }}"
-    delegate_to: 127.0.0.1
-
-  - name: Add hosts to known_hosts on control
-    known_hosts:
-      state: present
-      path: /home/automation/.ssh/known_hosts
-      name: "{{ansible_hostname }}"
-      key: "{{ ansible_hostname }},{{ ansible_eth1.ipv4.address }} {{ pub_key_node.stdout }}"
-    delegate_to: 127.0.0.1
-
-  - name: Remove host to known_hosts on nodes
-    known_hosts:
-      state: absent
-      path: /home/automation/.ssh/known_hosts
-      name: control
-
-  - name: Add host to known_hosts on nodes
-    known_hosts:
-      state: present
-      path: /home/automation/.ssh/known_hosts
-      name: "{{ansible_hostname }}"
-      key: "{{ ansible_hostname}},{{ ansible_eth1.ipv4.address }} {{pub_key_control.stdout }}"
-
 
   - name: Make sudo passwordless on all hosts for wheel group
     lineinfile:
