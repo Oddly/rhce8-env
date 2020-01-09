@@ -1,3 +1,4 @@
+
 ---
 - import_playbook: repo.yml
 - import_playbook: control.yml
@@ -7,4 +8,21 @@
 - import_playbook: node4.yml
 - import_playbook: node5.yml
 - import_playbook: keys.yml
+- import_playbook: generic_tasks.yml
+
+- name: Add repo
+  hosts: all
+  become: yes
+  tasks:
+    - name: Adding repositories to all hosts
+      yum_repository:
+        name: BaseOS
+        baseurl: http://repo.example.com/BaseOS
+
+    - name: Adding repositories to all hosts
+      yum_repository:
+        name: AppStream
+        baseurl: http://repo.example.com/AppStream
+
+
 ...
