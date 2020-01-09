@@ -1,43 +1,76 @@
 ---
 - name: Add to known hosts and enable pw-less sudo
-  hosts: all:!repo
-  become: no
+  hosts: nodes
+  become: yes
   remote_user: automation
+  become_user: automation
   tasks:
+
+  - name: Create /home/automation/.ssh/
+    file:
+      path: /home/automation/.ssh
+      state: directory
+      mode: '0700'
+
   - name: Generate a key if not present
     openssh_keypair:
       path: /home/automation/.ssh/id_rsa
       size: 2048
 
-  - name: Register control public key
-    shell: cat /home/automation/.ssh/id_rsa.pub
-    register: pub_key
-    delegate_to: control
+  - name: Register public key of node
+    command: cat /home/automation/.ssh/id_rsa.pub
+    register: pub_key_node
 
-  - name: Distribute the keys from control to nodes
+  - name: Register public key of control
+    command: cat /home/automation/.ssh/id_rsa.pub
+    register: pub_key_control
+    delegate_to: 127.0.0.1
+    run_once: true
+
+  - name: Distribute the public key on the nodes
     authorized_key:
       user: automation
       state: present
-      key: "{{ item }}"
-    with_file:
-      - ~/.ssh/id_rsa.pub
+      key: "{{ pub_key_control.stdout }}"
 
-  - debug:
-      msg: "{{ ansible_hostname }},{{ ansible_eth1.ipv4.address }} {{ pub_key.stdout }}"
-
-  - name: Remove known_hosts
-    copy:
+  - name: Make known_hosts file
+    file:
+      state: touch
       path: /home/automation/.ssh/known_hosts
-      content: ""
+      mode: '0644'
+    delegate_to: 127.0.0.1
+    run_once: true
 
-  - name: Add hosts to known_hosts
+  - name: Remove old hosts from known_hosts on control
+    known_hosts:
+      state: absent
+      path: /home/automation/.ssh/known_hosts
+      name: "{{ansible_hostname }}"
+    delegate_to: 127.0.0.1
+
+  - name: Add hosts to known_hosts on control
     known_hosts:
       state: present
       path: /home/automation/.ssh/known_hosts
-      name: "{{ ansible_eth1.ipv4.address }}"
-      key: "{{ ansible_hostname }},{{ ansible_eth1.ipv4.address }} {{ pub_key.stdout }}"
+      name: "{{ansible_hostname }}"
+      key: "{{ ansible_hostname }},{{ ansible_eth1.ipv4.address }} {{ pub_key_node.stdout }}"
+    delegate_to: 127.0.0.1
 
-  - name: Make sudo passwordless on all hosts
+  - name: Remove host to known_hosts on nodes
+    known_hosts:
+      state: absent
+      path: /home/automation/.ssh/known_hosts
+      name: control
+
+  - name: Add host to known_hosts on nodes
+    known_hosts:
+      state: present
+      path: /home/automation/.ssh/known_hosts
+      name: "{{ansible_hostname }}"
+      key: "{{ ansible_hostname}},{{ ansible_eth1.ipv4.address }} {{pub_key_control.stdout }}"
+
+
+  - name: Make sudo passwordless on all hosts for wheel group
     lineinfile:
       dest: /etc/sudoers
       state: present
