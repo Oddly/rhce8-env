@@ -12,6 +12,8 @@ node3.example.com ansible_host=192.168.55.203 ansible_user=vagrant ansible_ssh_p
 node4.example.com ansible_host=192.168.55.204 ansible_user=vagrant ansible_ssh_pass=vagrant ansible_python_interpreter=/usr/bin/python3
 [node5]
 node5.example.com ansible_host=192.168.55.205 ansible_user=vagrant ansible_ssh_pass=vagrant ansible_python_interpreter=/usr/bin/python3
+
+#Added groups for post-deployment playbooks.
 [nodes:children]
 node1
 node2
@@ -19,3 +21,13 @@ node3
 node4
 node5
 
+[proxy:children]
+node1
+[webservers:children]
+node2
+node4
+node3
+[database:children]
+node3
+[development:children]
+node5

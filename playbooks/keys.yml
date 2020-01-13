@@ -62,10 +62,10 @@
         - '- Node 3 - 192.168.55.203'
         - '- Node 4 - 192.168.55.204'
         - '- Node 5 - 192.168.55.205'
-        - '- Username/Password - vagrant/vagrant'
+        - '- Username/Password - automation/devops'
         - '--------------------------------------------------'
         - '- For root - use `sudo` or `sudo su`'
-        - '- Access example - ssh vagrant@192.168.55.200'
+        - '- Access example - ssh automation@192.168.55.200'
         - '- Happy Studying!'
         
 ...
