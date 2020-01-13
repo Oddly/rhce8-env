@@ -10,11 +10,11 @@ _Gatekeeper will block virtualbox from installing. All you have to do is go into
 ```
 
 ##### Next steps: 
-1. Create a separate `~/bin` directory and `cd` to it.  (The directory doesn't have to be ~/bin, it can be anything you want.)
+1. Create a separate `~/` directory and `cd` to it.  (The directory doesn't have to be ~/, it can be anything you want.)
 2. Clone the environment repo `git clone git@github.com:Oddly/rhce8-env.git`
-3. Change to the `rhce8-env` directory that is now in your `~/bin` directory.
+3. Change to the `rhce8-env` directory that is now in your `~/` directory.
 4. Run `./vagrant-patch`
-4. Run `vagrant up` to deploy the environment (If the environment has a designated repo VM it will take the longest to deploy the first time only, this is because the repo system has all the packages available to the base release but will be quicker on subsequent deployments.)
+5. Run `vagrant up` to deploy the environment (If the environment has a designated repo VM it will take the longest to deploy the first time only, this is because the repo system has all the packages available to the base release but will be quicker on subsequent deployments.)
 
 ##### Alternatively, you can install everything individually below.
 - [Install the Latest Version of Vagrant](https://www.vagrantup.com/downloads.html) - (`brew cask install vagrant`)
