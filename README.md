@@ -1,7 +1,7 @@
-# RHCE 8 Automated Practice Deployment
+# RHCE 8 Practice environment
 _Powered by Ansible and Vagrant_ 
 
-## Installation options below:
+## Installation options:
 ## macOS
 _Gatekeeper will block virtualbox from installing. All you have to do is go into Security & Privacy of System Preferences and click Allow under the General tab and rerun installation._
 ##### Install all at once with the command below:
@@ -9,17 +9,18 @@ _Gatekeeper will block virtualbox from installing. All you have to do is go into
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" && xcode-select --install &&brew install ansible ; brew install python ; brew cask install vagrant ; brew cask install VirtualBox ; brew cask install virtualbox-extension-pack ; vagrant plugin install vagrant-guest_ansible
 ```
 
+##### Next steps: 
+1. Create a separate `~/bin` directory and `cd` to it.  (The directory doesn't have to be ~/bin, it can be anything you want.)
+2. Clone the environment repo to it with `git clone ssh://git@git.snow.nl:2222/scrauwels/rhce8-env.git`
+3. Change to the `rhce8-env` directory that is now in your `~/bin` directory.
+4. Run `vagrant up` to deploy the environment (If the environment has a designated repo VM it will take the longest to deploy the first time only, this is because the repo system has all the packages available to the base release but will be quicker on subsequent deployments.)
+
 ##### Alternatively, you can install everything individually below.
 - [Install the Latest Version of Vagrant](https://www.vagrantup.com/downloads.html) - (`brew cask install vagrant`)
     - Vagrant Plugin - `vagrant plugin install vagrant-guest_ansible`
 - [Install the Latest Version of Virtualbox](https://www.virtualbox.org/wiki/Downloads) (`brew cask install VirtualBox`)
     - Virtual Box Extension Pack (`brew cask install virtualbox-extension-pack`)
 
-##### Once the above software is installed. Do the following if you're running the environment on Mac:
-1. Create a separate `~/bin` directory and `cd` to it.  (The directory doesn't have to be ~/bin, it can be anything you want.)
-2. Clone the environment repo to it with `git clone https://github.com/rdbreak/rhce8env.git`
-3. Change to the `rhce8env` directory that is now in your `~/bin` directory.
-4. Run `vagrant up` to deploy the environment (If the environment has a designated repo VM it will take the longest to deploy the first time only, this is because the repo system has all the packages available to the base release but will be quicker on subsequent deployments.)
 
 ## CentOS7/RHEL7/Manjaro/Arch - Install all at once by Copy/Pasting the below command into your terminal as root.
 _NOTE - If it's been awhile since you've run yum update, do that first. Reboot if the kernel was updated. There may be some dependencies errors but don't be alarmed as this won't stop the environment from working._
@@ -55,22 +56,13 @@ sudo snap install ruby ; sudo apt install ruby-bundler git -y; wget -c https://r
 ##### Also, install the Virtualbox extension pack below
 - [Virtual Box Extension Pack](https://www.virtualbox.org/wiki/Downloads)
 
-##### Once the above software is installed. Do the following if you're running the environment on Linux:
+#### Next step:
 1. Create a separate `~/bin` directory and `cd` to it.  (The directory doesn't have to be ~/bin, it can be anything you want.)
 2. Clone the environment repo to it with `git clone https://github.com/rdbreak/rhce8env.git`
 3. Change to the `rhce8env` directory that is now in your `~/bin` directory.
 4. Run `vagrant up` to deploy the environment (If the environment has a designated repo VM it will take the longest to deploy the first time only, this is because the repo system has all the packages available to the base release but will be quicker on subsequent deployments.)
 
-**Also, don't be spooked by any scary red font during the setup process. There are known issues that won't have a negative affect on the environment.**
-
 _Now the deployment should be up and running!_
-
-## (Recommended) Install Github Desktop to make pulling down changes easier
-_NOTE this requires a free Github account_
-1. Navigate to https://desktop.github.com/ and download Github Desktop.
-2. Create or sign in to your account.
-3. Click "Clone a repository from the Internet" and enter "rdbreak/rhce8env" and choose a location then "Clone".
-4. You are also able to easily pull changes when they're made available.
 
 ## Other Useful Information:
 You can also use the VirtualBox console to interact with the VMs or through a terminal. If you need to reset the root password, you would need to use the console. I'm constantly making upgrades to the environments, so every once and awhile run `git pull` in the repo directory to pull down changes. If you're using Windows, it's recommended to use Github Desktop so you can easily pull changes that are made to the environment. The first time you run the vagrant up command, it will download the OS images for later use. In other words, it will take longest the first time around but will be faster when it is deployed again. You can run `vagrant destroy -f` to destroy your environment at anytime. **This will erase everything**. This environment is meant to be reuseable, If you run the `vagrant up` command after destroying the environment, the OS image will already be downloaded and environment will deploy faster. Deployment should take around 15 minutes depending on your computer. You shouldn't need to access the IPA server during your practice exams. Everything should be provided that you would normally need during an actual exam. Hope this helps in your studies!
