@@ -38,76 +38,75 @@
       validate: 'visudo -cf %s'
     become: yes
     become_user: root
-
-  - name: Adding repositories to all hosts
-    yum_repository:
-      name: BaseOS
-      baseurl: http://repo.example.com/BaseOS
-      description: BaseOS
-  - name: Adding repositories to all hosts
-    yum_repository:
-      name: AppStream
-      baseurl: http://repo.example.com/AppStream
-      description: AppStream
+- name: Adding repos
+  hosts: all
+  become: yes 
+  become_user: root
+  tasks:
+    - name: Adding repositories to all hosts
+      yum_repository:
+        name: BaseOS
+        baseurl: http://repo.example.com/BaseOS
+        description: BaseOS
+    - name: Adding repositories to all hosts
+      yum_repository:
+        name: AppStream
+        baseurl: http://repo.example.com/AppStream
+        description: AppStream
 
 # Prepare the machines for the partitioning task.
+- name: Making volume groups on proxy
+  hosts: proxy
+  become: yes
+  become_user: root
+  tasks:
+    - name: Make a primary partition on /dev/sdb
+      parted:
+        device: /dev/sdb
+        number: 1
+        state: present
 
-  - name: Making volume groups on proxy
-    hosts: proxy
-    become: yes
-    tasks:
-      - name: Make a primary partition on /dev/sdb
-        parted:
-          device: /dev/sdb
-          number: 1
-          state: present
-  
-  - name: Making volume groups on webserver
-    hosts: webserver:!node3
-    become: yes
-    tasks:
-      - name: Make a primary partition on /dev/sdb
-        parted:
-          device: /dev/sdb
-          number: 1
-          state: present
-          flags: [ lvm ]
-          part_end: 200MB
-      - name: Make a volume group named research on /dev/sdb
-        lvg:
-          vg: research
-          pvs: /dev/sdb1
-  
-  - name: Making volume groups on database
-    hosts: database
-    become: yes
-    tasks:
-      - name: Make a primary partition on /dev/sdb
-        parted:
-          device: /dev/sdb
-          number: 1
-          state: present
-          flags: [ lvm ]
-          part_end: 450MB
-      - name: Make a volume group named research on /dev/sdb
-        lvg:
-          vg: research
-          pvs: /dev/sdb1
-  
-  - name: Making volume groups on development
-    hosts: development
-    become: yes
-    tasks:
-      - name: Make a primary partition on /dev/sdb
-        parted:
-          device: /dev/sdb
-          number: 1
-          state: present
-  
-#  - name: info all hosts
-#    hosts: all
-#    become: yes
-#    tasks:
-#      - debug:
-#          msg: "{{ ansible_hostname }} {{ ansible_lvm.vgs.research }}"
-#        tags: info
+- name: Making volume groups on webserver
+  hosts: webservers:!node3
+  become: yes
+  become_user: root
+  tasks:
+    - name: Make a primary partition on /dev/sdb
+      parted:
+        device: /dev/sdb
+        number: 1
+        state: present
+        flags: [ lvm ]
+        part_end: 200MB
+    - name: Make a volume group named research on /dev/sdb
+      lvg:
+        vg: research
+        pvs: /dev/sdb1
+
+- name: Making volume groups on database
+  hosts: database
+  become: yes
+  become_user: root
+  tasks:
+    - name: Make a primary partition on /dev/sdb
+      parted:
+        device: /dev/sdb
+        number: 1
+        state: present
+        flags: [ lvm ]
+        part_end: 450MB
+    - name: Make a volume group named research on /dev/sdb
+      lvg:
+        vg: research
+        pvs: /dev/sdb1
+
+- name: Making volume groups on development
+  hosts: development
+  become: yes
+  tasks:
+    - name: Make a primary partition on /dev/sdb
+      parted:
+        device: /dev/sdb
+        number: 1
+        flags: [ lvm ]
+        state: present
