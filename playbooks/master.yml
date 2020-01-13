@@ -10,20 +10,4 @@
 - import_playbook: keys.yml
 - import_playbook: generic_tasks.yml
 
-- name: Add repo
-  hosts: all
-  become: yes
-  tasks:
-    - name: Adding repositories to all hosts
-      yum_repository:
-        name: BaseOS
-        baseurl: http://repo.example.com/BaseOS
-        description: BaseOS
-
-    - name: Adding repositories to all hosts
-      yum_repository:
-        name: AppStream
-        baseurl: http://repo.example.com/AppStream
-        description: AppStream
-
 ...

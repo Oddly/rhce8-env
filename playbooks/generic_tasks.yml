@@ -6,13 +6,13 @@
   become_user: automation
   tasks:
 
-  - name: Create /home/automation/.ssh/
+  - name: Create /home/automation/.ssh/ on the nodes
     file:
       path: /home/automation/.ssh
       state: directory
       mode: '0700'
 
-  - name: Generate a key if not present
+  - name: Generate a key if not present on the nodes
     openssh_keypair:
       path: /home/automation/.ssh/id_rsa
       size: 2048
@@ -23,13 +23,13 @@
     delegate_to: 127.0.0.1
     run_once: true
 
-  - name: Distribute the public key on the nodes
+  - name: Distribute the public key of control on the nodes
     authorized_key:
       user: automation
       state: present
       key: "{{ pub_key_control.stdout }}"
 
-  - name: Make sudo passwordless on all hosts for wheel group
+  - name: Make sudo passwordless on all nodes for the wheel group
     lineinfile:
       dest: /etc/sudoers
       state: present
@@ -38,3 +38,14 @@
       validate: 'visudo -cf %s'
     become: yes
     become_user: root
+
+#  - name: Adding repositories to all hosts
+#    yum_repository:
+#      name: BaseOS
+#      baseurl: http://repo.example.com/BaseOS
+#      description: BaseOS
+#  - name: Adding repositories to all hosts
+#    yum_repository:
+#      name: AppStream
+#      baseurl: http://repo.example.com/AppStream
+#      description: AppStream
