@@ -6,38 +6,38 @@
   become_user: automation
   tasks:
 
-  - name: Create /home/automation/.ssh/ on the nodes
-    file:
-      path: /home/automation/.ssh
-      state: directory
-      mode: '0700'
+#  - name: Create /home/automation/.ssh/ on the nodes
+#    file:
+#      path: /home/automation/.ssh
+#      state: directory
+#      mode: '0700'
+#
+#  - name: Generate a key if not present on the nodes
+#    openssh_keypair:
+#      path: /home/automation/.ssh/id_rsa
+#      size: 2048
+#
+#  - name: Register public key of control
+#    command: cat /home/automation/.ssh/id_rsa.pub
+#    register: pub_key_control
+#    delegate_to: 127.0.0.1
+#    run_once: true
+#
+#  - name: Distribute the public key of control on the nodes
+#    authorized_key:
+#      user: automation
+#      state: present
+#      key: "{{ pub_key_control.stdout }}"
 
-  - name: Generate a key if not present on the nodes
-    openssh_keypair:
-      path: /home/automation/.ssh/id_rsa
-      size: 2048
-
-  - name: Register public key of control
-    command: cat /home/automation/.ssh/id_rsa.pub
-    register: pub_key_control
-    delegate_to: 127.0.0.1
-    run_once: true
-
-  - name: Distribute the public key of control on the nodes
-    authorized_key:
-      user: automation
-      state: present
-      key: "{{ pub_key_control.stdout }}"
-
-  - name: Make sudo passwordless on all nodes for the wheel group
-    lineinfile:
-      dest: /etc/sudoers
-      state: present
-      regexp: '^%wheel'
-      line: '%wheel ALL=(ALL) NOPASSWD: ALL'
-      validate: 'visudo -cf %s'
-    become: yes
-    become_user: root
+#  - name: Make sudo passwordless on all nodes for the wheel group
+#    lineinfile:
+#      dest: /etc/sudoers
+#      state: present
+#      regexp: '^%wheel'
+#      line: '%wheel ALL=(ALL) NOPASSWD: ALL'
+#      validate: 'visudo -cf %s'
+#    become: yes
+#    become_user: root
 
 #  - name: Adding repositories to all hosts
 #    yum_repository:
