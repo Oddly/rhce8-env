@@ -1,11 +1,10 @@
 ---
-- name: Add to known hosts and enable pw-less sudo
+- name: Generate key on nodes and set key auth for user automation
   hosts: nodes
   become: yes
   remote_user: automation
   become_user: automation
   tasks:
-
   - name: Create /home/automation/.ssh/ on the nodes
     file:
       path: /home/automation/.ssh
@@ -22,12 +21,30 @@
     register: pub_key_control
     delegate_to: 127.0.0.1
     run_once: true
+    changed_when: false
 
   - name: Distribute the public key of control on the nodes
     authorized_key:
       user: automation
       state: present
       key: "{{ pub_key_control.stdout }}"
+
+- name: Adding repos and make sudo passwordless
+  hosts: all
+  become: yes 
+  become_user: root
+  tasks:
+
+  - name: Adding repositories to all hosts
+    yum_repository:
+      name: BaseOS
+      baseurl: http://repo.example.com/BaseOS
+      description: BaseOS
+  - name: Adding repositories to all hosts
+    yum_repository:
+      name: AppStream
+      baseurl: http://repo.example.com/AppStream
+      description: AppStream
 
   - name: Make sudo passwordless on all nodes for the wheel group
     lineinfile:
@@ -38,75 +55,23 @@
       validate: 'visudo -cf %s'
     become: yes
     become_user: root
-- name: Adding repos
-  hosts: all
-  become: yes 
-  become_user: root
-  tasks:
-    - name: Adding repositories to all hosts
-      yum_repository:
-        name: BaseOS
-        baseurl: http://repo.example.com/BaseOS
-        description: BaseOS
-    - name: Adding repositories to all hosts
-      yum_repository:
-        name: AppStream
-        baseurl: http://repo.example.com/AppStream
-        description: AppStream
 
-# Prepare the machines for the partitioning task.
-- name: Making volume groups on proxy
-  hosts: proxy
-  become: yes
-  become_user: root
-  tasks:
-    - name: Make a primary partition on /dev/sdb
-      parted:
-        device: /dev/sdb
-        number: 1
-        state: present
-
-- name: Making volume groups on webserver
+- name: Making volume group on webserver (200MB)
   hosts: webservers:!node3
   become: yes
   become_user: root
   tasks:
-    - name: Make a primary partition on /dev/sdb
-      parted:
-        device: /dev/sdb
-        number: 1
-        state: present
-        flags: [ lvm ]
-        part_end: 200MB
-    - name: Make a volume group named research on /dev/sdb
-      lvg:
-        vg: research
-        pvs: /dev/sdb1
-
-- name: Making volume groups on database
+  - name: Make a volume group named research on /dev/sdb
+    lvg:
+      vg: research
+      pvs: /dev/sdb
+      
+- name: Making volume group on database (500MB)
   hosts: database
   become: yes
   become_user: root
   tasks:
-    - name: Make a primary partition on /dev/sdb
-      parted:
-        device: /dev/sdb
-        number: 1
-        state: present
-        flags: [ lvm ]
-        part_end: 450MB
-    - name: Make a volume group named research on /dev/sdb
-      lvg:
-        vg: research
-        pvs: /dev/sdb1
-
-- name: Making volume groups on development
-  hosts: development
-  become: yes
-  tasks:
-    - name: Make a primary partition on /dev/sdb
-      parted:
-        device: /dev/sdb
-        number: 1
-        flags: [ lvm ]
-        state: present
+  - name: Make a volume group named research on /dev/sdb
+    lvg:
+      vg: research
+      pvs: /dev/sdb

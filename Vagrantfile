@@ -60,7 +60,7 @@ config.vm.define "node2" do |node2|
     node2.memory = "512"
 
     if not File.exist?(file_to_disk2)
-      node2.customize ['createhd', '--filename', file_to_disk2, '--variant', 'Fixed', '--size', 5 * 1024]
+      node2.customize ['createhd', '--filename', file_to_disk2, '--variant', 'Fixed', '--size', 2 * 100]
     end
     node2.customize ['storagectl', :id, '--name', 'SATA Controller', '--add', 'sata', '--portcount', 2]
     node2.customize ['storageattach', :id,  '--storagectl', 'SATA Controller', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', file_to_disk2]
@@ -80,7 +80,7 @@ config.vm.define "node3" do |node3|
     node3.memory = "512"
 
     if not File.exist?(file_to_disk3)
-      node3.customize ['createhd', '--filename', file_to_disk3, '--variant', 'Fixed', '--size', 5 * 1024]
+      node3.customize ['createhd', '--filename', file_to_disk3, '--variant', 'Fixed', '--size', 5 * 100]
     end
     node3.customize ['storagectl', :id, '--name', 'SATA Controller', '--add', 'sata', '--portcount', 2]
     node3.customize ['storageattach', :id,  '--storagectl', 'SATA Controller', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', file_to_disk3]
@@ -101,7 +101,7 @@ config.vm.define "node4" do |node4|
     node4.memory = "512"
 
     if not File.exist?(file_to_disk4)
-      node4.customize ['createhd', '--filename', file_to_disk4, '--variant', 'Fixed', '--size', 5 * 1024]
+      node4.customize ['createhd', '--filename', file_to_disk4, '--variant', 'Fixed', '--size', 2 * 100]
     end
     node4.customize ['storagectl', :id, '--name', 'SATA Controller', '--add', 'sata', '--portcount', 2]
     node4.customize ['storageattach', :id,  '--storagectl', 'SATA Controller', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', file_to_disk4]
