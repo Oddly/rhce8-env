@@ -5,14 +5,15 @@ cd /opt/vagrant/embedded/gems/2.2.6/gems/vagrant-2.2.6 || exit
 sudo git apply --verbose --exclude='website/*' /tmp/vagrant_226_virtualbox_610.patch
 
 # Check if boxes.tar exists and extract to ~/.vagrant.d/boxes/ if it does, download and extract it if it doesn't..
-
-boxes_location=http://LinuxBook-Pro.local:8081
-
+ 
+lookup_ip=$(arp -a | grep a4:83:e7:9b:b5:cc | awk '{print $2}' | sed 's/[()]//g')
+boxes_location=http://$lookup_ip:8081
+echo $boxes_location
 if [ -f "$HOME/Downloads/boxes.tar" ]; then
-    mkdir -p /Users/sam/.vagrant.d/boxes && tar -C $HOME/.vagrant.d/boxes -xzf $HOME/Downloads/boxes.tar
+    mkdir -p /Users/sam/.vagrant.d/boxes && tar -C $HOME/.vagrant.d/boxes -xvzf $HOME/Downloads/boxes.tar
 else
     if wget -O $HOME/Downloads/boxes.tar $boxes_location/boxes.tar; then
-       tar -zxf $HOME/Downloads/boxes.tar -C $HOME/.vagrant.d/boxes/
+       tar -xvzf $HOME/Downloads/boxes.tar -C $HOME/.vagrant.d/boxes/
     else 
         exit 1 
     fi
