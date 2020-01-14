@@ -3,20 +3,15 @@ _Powered by Ansible and Vagrant_
 
 ## Installation options:
 ## macOS
-_Gatekeeper will block virtualbox from installing. All you have to do is go into Security & Privacy of System Preferences and click Allow under the General tab and rerun installation._
-##### Install all at once with the command below:
-```
-/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" && xcode-select --install &&brew install ansible ; brew install python ; brew cask install vagrant ; brew cask install VirtualBox ; brew cask install virtualbox-extension-pack ; vagrant plugin install vagrant-guest_ansible ;
-```
+_Gatekeeper can block virtualbox from installing. All you have to do is go into Security & Privacy of System Preferences and click Allow under the General tab and rerun installation._
 
 ##### Next steps: 
-1. Create a separate `~/` directory and `cd` to it.  (The directory doesn't have to be ~/, it can be anything you want.)
-2. Clone the environment repo `git clone git@github.com:Oddly/rhce8-env.git`
+1. Cd to your home directory `cd ~/`.  (The directory doesn't have to be ~/, it can be anything you want.)
+2. Clone the environment repo `git clone https://github.com:Oddly/rhce8-env.git`
 3. Change to the `rhce8-env` directory that is now in your `~/` directory.
-4. Run `./vagrant-patch`
+4. Run the following code: `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" && xcode-select --install &&brew install ansible ; brew install python ; brew cask install vagrant ; brew cask install VirtualBox ; brew cask install virtualbox-extension-pack ; vagrant plugin install vagrant-guest_ansible ; ./patch`
 5. Run `vagrant up` to deploy the environment (If the environment has a designated repo VM it will take the longest to deploy the first time only, this is because the repo system has all the packages available to the base release but will be quicker on subsequent deployments.)
 6. `vagrant destroy -f` removes all machines (NO confirmation!)
-7. 
 
 ##### Alternatively, you can install everything individually below.
 - [Install the Latest Version of Vagrant](https://www.vagrantup.com/downloads.html) - (`brew cask install vagrant`)

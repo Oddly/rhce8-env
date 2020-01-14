@@ -1,4 +1,0 @@
-#!/bin/bash
-curl https://github.com/briancain/vagrant/commit/fb4e6985e142da56bad143d70600cd3695c91757.patch > /tmp/vagrant_226_virtualbox_610.patch
-cd /opt/vagrant/embedded/gems/2.2.6/gems/vagrant-2.2.6
-sudo git apply --verbose --exclude='website/*' /tmp/vagrant_226_virtualbox_610.patch
