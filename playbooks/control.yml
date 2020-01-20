@@ -150,3 +150,7 @@
         # Repo/AppStream 
         # Available to use from http://repo.example.com/BaseOS and http://repo.example.com/AppStream
         "
+  - name: Insert ansible.cfg template
+    template:
+      src: ansible.cfg.j2
+      dest: /etc/ansible/ansible.cfg
