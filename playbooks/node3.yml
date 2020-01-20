@@ -17,56 +17,20 @@
   - name: Disabling services
     selinux:
       state: disabled
-  - name: Fixing hosts file
-    lineinfile:
+
+  - name: Adding all addresses to hosts file.
+    copy:
+      content: |
+        127.0.0.1    localhost.localdomain localhost
+        ::1          localhost6.localdomain6 localhost6
+        192.168.55.199 repo.example.com repo
+        192.168.55.200 control.example.com control
+        192.168.55.201 node1.example.com node1
+        192.168.55.202 node2.example.com node2
+        192.168.55.203 node3.example.com node3
+        192.168.55.204 node4.example.com node4
+        192.168.55.205 node5.example.com node5
       dest: /etc/hosts
-      regexp: '^127\.0\.0\.1'
-      state: absent
-  - name: Adding localhost IPV4 address to host file
-    lineinfile:
-      path: /etc/hosts
-      line: 127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
-      create: yes
-  - name: Adding localhost IPV6 address to host file
-    lineinfile:
-      path: /etc/hosts
-      line: ::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
-      create: yes
-  - name: Adding repo address to hosts file
-    lineinfile:
-      path: /etc/hosts
-      line: 192.168.55.199 repo.example.com repo
-      create: yes
-  - name: Adding Control address to hosts file
-    lineinfile:
-      path: /etc/hosts
-      line: 192.168.55.200 control.example.com control
-      create: yes
-  - name: Adding node1 address to hosts file
-    lineinfile:
-      path: /etc/hosts
-      line: 192.168.55.201 node1.example.com node1
-      create: yes
-  - name: Adding node2 address to hosts file
-    lineinfile:
-      path: /etc/hosts
-      line: 192.168.55.202 node2.example.com node2
-      create: yes
-  - name: Adding node3 address to hosts file
-    lineinfile:
-      path: /etc/hosts
-      line: 192.168.55.203 node3.example.com node3
-      create: yes
-  - name: Adding node4 address to hosts file
-    lineinfile:
-      path: /etc/hosts
-      line: 192.168.55.204 node4.example.com node4
-      create: yes
-  - name: Adding node5 address to hosts file
-    lineinfile:
-      path: /etc/hosts
-      line: 192.168.55.205 node5.example.com node5
-      create: yes
   - name: Erasing Repos
     shell: rm -rf /etc/yum.repos.d/*
   - name: Creating Temporary Repo File

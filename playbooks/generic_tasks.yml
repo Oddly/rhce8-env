@@ -75,6 +75,7 @@
     lvg:
       vg: research
       pvs: /dev/sdb
+
   - name: Welcome to the RHCE 8 Study/Test Environment!
     debug:
       msg:

@@ -4,7 +4,7 @@
   tasks: 
   - name: Sending Key to node1
     expect:
-      command: ssh-copy-id -i /home/automation/.ssh/id_rsa.pub automation@node1.example.com 
+      command: ssh automation@node1.example.com 
       responses:
         'Are you sure you want to continue connecting': 'yes'
         'password': 'devops'
@@ -14,7 +14,7 @@
     ignore_errors: yes
   - name: Sending Key to node2
     expect:
-      command: ssh-copy-id -i /home/automation/.ssh/id_rsa.pub automation@node2.example.com 
+      command: ssh automation@node2.example.com 
       responses:
         'Are you sure you want to continue connecting': 'yes'
         'password': 'devops'
@@ -24,7 +24,7 @@
     ignore_errors: yes
   - name: Sending Key to node3
     expect:
-      command: ssh-copy-id -i /home/automation/.ssh/id_rsa.pub automation@node3.example.com 
+      command: ssh automation@node3.example.com 
       responses:
         'Are you sure you want to continue connecting': 'yes'
         'password': 'devops'
@@ -34,7 +34,7 @@
     ignore_errors: yes
   - name: Sending Key to node4
     expect:
-      command: ssh-copy-id -i /home/automation/.ssh/id_rsa.pub automation@node4.example.com
+      command: ssh automation@node4.example.com
       responses:
         'Are you sure you want to continue connecting': 'yes'
         'password': 'devops'
@@ -44,7 +44,7 @@
     ignore_errors: yes
   - name: Sending Key to node5
     expect:
-      command: ssh-copy-id -i /home/automation/.ssh/id_rsa.pub automation@node5.example.com
+      command: ssh automation@node5.example.com
       responses:
         'Are you sure you want to continue connecting': 'yes'
         'password': 'devops'
