@@ -8,15 +8,18 @@ file_to_disk2 = './disk-0-2.vdi'
 file_to_disk3 = './disk-0-3.vdi'
 file_to_disk4 = './disk-0-4.vdi'
 file_to_disk5 = './disk-0-5.vdi'
-
+# Define the input variable for use below.
+input = ''
 # Vagrant configuration
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 # Use same SSH key for each machine
   config.ssh.insert_key = false
   config.vm.box_check_update = false
-  puts "Select environment version (1 or 2): "
-  input = STDIN.gets.chomp
-
+# When "vagrant up" is run, ask for which environment version to install.
+  config.trigger.before :up do |t|
+    t.ruby = puts "Select environment version (1 or 2): "
+    input = STDIN.gets.chomp
+  end
 # Configure the first VM, which acts as a repository.
 config.vm.define "repo" do |repo|
   repo.vm.box = "rdbreak/rhel8repo"
@@ -144,10 +147,10 @@ config.vm.define "control" do |control|
   control.vm.provider :virtualbox do |control|
     control.customize ['modifyvm', :id,'--memory', '2048']
   end
+# Insert the previously selected exam environment into a file to be used by Ansible below.
   control.vm.provision :shell, inline: "echo exam_version: #{input} > /vagrant/playbooks/vagrant_ansible.yml", run: "always"
-#  control.vm.provision "shell", inline: "/bin/bash /vagrant/vagrantup.sh"
-  control.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: "disk-*"
-  control.vm.provision :ansible_local do |ansible|
+  control.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: "disk-*", rsync_auto: true, run: "always"
+  control.vm.provision :ansible_local, :run => "always" do |ansible|
   ansible.playbook = "/vagrant/playbooks/master.yml"
   ansible.install = false
   ansible.compatibility_mode = "2.0"

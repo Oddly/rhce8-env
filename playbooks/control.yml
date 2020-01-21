@@ -71,6 +71,8 @@
     file:
       state: directory
       path: /home/automation/.ssh/
+    become: yes
+    become_user: automation
   - name: Generating RSA Key
     openssh_keypair:
       path: /home/automation/.ssh/id_rsa

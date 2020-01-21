@@ -1,5 +1,5 @@
 ---
-- name: Prompt which exam to setup for.
+- name: Start provisioning
   hosts: all 
   vars_files:
     - vagrant_ansible.yml
