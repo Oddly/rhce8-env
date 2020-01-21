@@ -1,7 +1,21 @@
-
 ---
+- name: Prompt which exam to setup for.
+  hosts: all 
+  vars_prompt:
+    - name: exam_version
+      prompt: "Which exam do you want to practice? (1 or 2, default=1)?"
+      private: no
+      default: 1
+      tags: always
+  tasks:
+    - name: Bind variable exam_version so it is available in imported playbooks
+      set_fact:
+          exam_version: "{{ exam_version }}"
+      tags: always
 - import_playbook: repo.yml
+  tags: repo
 - import_playbook: control.yml
+  tags: control
 - import_playbook: node1.yml
 - import_playbook: node2.yml
 - import_playbook: node3.yml

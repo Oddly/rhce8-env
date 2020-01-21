@@ -2,53 +2,68 @@
 - hosts: control
   become: true
   tasks: 
-  - name: Sending Key to node1
+  - name: Adding node 1 host key to control
     expect:
       command: ssh automation@node1.example.com 
       responses:
         'Are you sure you want to continue connecting': 'yes'
-        'password': 'devops'
-      timeout: 10
+      timeout: 5
     become: yes
     become_user: automation
     ignore_errors: yes
-  - name: Sending Key to node2
+    when: exam_version == '1'
+  - name: Adding node 2 host key to control
     expect:
       command: ssh automation@node2.example.com 
       responses:
         'Are you sure you want to continue connecting': 'yes'
-        'password': 'devops'
-      timeout: 10
+      timeout: 5
     become: yes
     become_user: automation
     ignore_errors: yes
-  - name: Sending Key to node3
+    when: exam_version == '1'
+  - name: Adding node 3 host key to control
     expect:
       command: ssh automation@node3.example.com 
       responses:
         'Are you sure you want to continue connecting': 'yes'
-        'password': 'devops'
-      timeout: 10
+      timeout: 5
     become: yes
     become_user: automation
     ignore_errors: yes
-  - name: Sending Key to node4
+    when: exam_version == '1'
+  - name: Adding node 4 host key to control
     expect:
       command: ssh automation@node4.example.com
       responses:
         'Are you sure you want to continue connecting': 'yes'
-        'password': 'devops'
-      timeout: 10
+      timeout: 5
     become: yes
     become_user: automation
     ignore_errors: yes
-  - name: Sending Key to node5
+    when: exam_version == '1'
+  - name: Adding node 5 host key to control
     expect:
       command: ssh automation@node5.example.com
       responses:
         'Are you sure you want to continue connecting': 'yes'
-        'password': 'devops'
-      timeout: 10
+      timeout: 5
     become: yes
     become_user: automation
     ignore_errors: yes
+    when: exam_version == '1'
+  - name: Welcome to the RHCE 8 Study/Test Environment!
+    debug:
+      msg:
+        - 'Next Steps: Accessing The Systems:'
+        - '- Control - 192.168.55.200'
+        - '- Node 1 - 192.168.55.201'
+        - '- Node 2 - 192.168.55.202'
+        - '- Node 3 - 192.168.55.203'
+        - '- Node 4 - 192.168.55.204'
+        - '- Node 5 - 192.168.55.205'
+        - '- Username/Password - automation/devops'
+        - '--------------------------------------------------'
+        - '- For root - use `sudo` or `sudo su`'
+        - '- Access example - ssh automation@192.168.55.200'
+        - '- Happy Studying!'

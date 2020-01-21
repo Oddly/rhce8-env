@@ -5,6 +5,9 @@
   remote_user: automation
   become_user: automation
   tasks:
+  - name: Debug exam_version
+    debug:
+      msg: "{{ exam_version }}"
   - name: Create /home/automation/.ssh/ on the nodes
     file:
       path: /home/automation/.ssh
@@ -28,6 +31,14 @@
       user: automation
       state: present
       key: "{{ pub_key_control.stdout }}"
+    when: exam_version == '1'
+
+  - name: Distribute the public key of control on the nodes
+    authorized_key:
+      user: automation
+      state: absent
+      key: "{{ pub_key_control.stdout }}"
+    when: exam_version == '2'
 
 - name: Adding repos and make sudo passwordless
   hosts: all
@@ -55,6 +66,18 @@
       validate: 'visudo -cf %s'
     become: yes
     become_user: root
+    when: exam_version == '1'
+
+  - name: Make sudo passwordless on all nodes for the wheel group
+    lineinfile:
+      dest: /etc/sudoers
+      state: absent
+      regexp: '^%wheel'
+      line: '%wheel ALL=(ALL) NOPASSWD: ALL'
+      validate: 'visudo -cf %s'
+    become: yes
+    become_user: root
+    when: exam_version == '2'
 
 - name: Making volume group on webserver (200MB)
   hosts: webservers:!node3
@@ -76,19 +99,4 @@
       vg: research
       pvs: /dev/sdb
 
-  - name: Welcome to the RHCE 8 Study/Test Environment!
-    debug:
-      msg:
-        - 'Next Steps: Accessing The Systems:'
-        - '- Control - 192.168.55.200'
-        - '- Node 1 - 192.168.55.201'
-        - '- Node 2 - 192.168.55.202'
-        - '- Node 3 - 192.168.55.203'
-        - '- Node 4 - 192.168.55.204'
-        - '- Node 5 - 192.168.55.205'
-        - '- Username/Password - automation/devops'
-        - '--------------------------------------------------'
-        - '- For root - use `sudo` or `sudo su`'
-        - '- Access example - ssh automation@192.168.55.200'
-        - '- Happy Studying!'
 
