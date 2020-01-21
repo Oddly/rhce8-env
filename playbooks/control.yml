@@ -67,6 +67,10 @@
     shell: nmcli con mod "System eth1" ipv4.addresses 192.168.55.200/24 ipv4.gateway 192.168.55.1 ipv4.dns 8.8.8.8 ipv4.dns-search example.com ipv4.method manual
   - name: Reloaded Network.
     shell: nmcli con up "System eth1"
+  - name: Make .ssh directory
+    file:
+      state: directory
+      path: /home/automation/.ssh/
   - name: Generating RSA Key
     openssh_keypair:
       path: /home/automation/.ssh/id_rsa
@@ -94,7 +98,7 @@
       state: directory
   - name: Copy template to directory
     copy:
-      src: playbooks/ansible.cfg.j2
+      src: ansible.cfg.j2
       dest: /etc/ansible/ansible.cfg
   - name: Building Welcome Message
     blockinfile:

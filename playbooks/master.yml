@@ -1,16 +1,12 @@
 ---
 - name: Prompt which exam to setup for.
   hosts: all 
-  vars_prompt:
-    - name: exam_version
-      prompt: "Which exam do you want to practice? (1 or 2, default=1)?"
-      private: no
-      default: 1
-      tags: always
+  vars_files:
+    - vagrant_ansible.yml
   tasks:
     - name: Bind variable exam_version so it is available in imported playbooks
       set_fact:
-          exam_version: "{{ exam_version }}"
+          exam_version: "{{ exam_version | default('1') }}"
       tags: always
 - import_playbook: repo.yml
   tags: repo
