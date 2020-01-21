@@ -31,14 +31,14 @@
       user: automation
       state: present
       key: "{{ pub_key_control.stdout }}"
-    when: exam_version == '1'
+    when: exam_version == 1
 
   - name: Distribute the public key of control on the nodes
     authorized_key:
       user: automation
       state: absent
       key: "{{ pub_key_control.stdout }}"
-    when: exam_version == '2'
+    when: exam_version == 2
 
 - name: Adding repos and make sudo passwordless
   hosts: all
@@ -66,7 +66,7 @@
       validate: 'visudo -cf %s'
     become: yes
     become_user: root
-    when: exam_version == '1'
+    when: exam_version == 1 
 
   - name: Make sudo passwordless on all nodes for the wheel group
     lineinfile:
@@ -77,7 +77,7 @@
       validate: 'visudo -cf %s'
     become: yes
     become_user: root
-    when: exam_version == '2'
+    when: exam_version == 2
 
 - name: Making volume group on webserver (200MB)
   hosts: webservers:!node3

@@ -1,5 +1,6 @@
 VAGRANTFILE_API_VERSION = "2"
 VAGRANT_DISABLE_VBOXSYMLINKCREATE = "1"
+# Trigger the script to prompt for exam version.
 
 # All disks that are added as second harddisk to the virtual machines.
 file_to_disk1 = './disk-0-1.vdi'
@@ -11,8 +12,8 @@ file_to_disk5 = './disk-0-5.vdi'
 # Vagrant configuration
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 # Use same SSH key for each machine
-config.ssh.insert_key = false
-config.vm.box_check_update = false
+  config.ssh.insert_key = false
+  config.vm.box_check_update = false
 
 # Configure the first VM, which acts as a repository.
 config.vm.define "repo" do |repo|
@@ -140,6 +141,8 @@ config.vm.define "control" do |control|
   control.vm.network "private_network", ip: "192.168.55.200"
   control.vm.provider :virtualbox do |control|
     control.customize ['modifyvm', :id,'--memory', '2048']
+    control.vm.provision "shell",
+      inline: "/bin/bash /vagrant/vagrantup.sh"
     end
   control.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: "disk-*"
   control.vm.provision :ansible_local do |ansible|
