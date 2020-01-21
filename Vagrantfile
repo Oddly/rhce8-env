@@ -14,15 +14,17 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 # Use same SSH key for each machine
   config.ssh.insert_key = false
   config.vm.box_check_update = false
+  puts "Select environment version (1 or 2): "
+  input = STDIN.gets.chomp
 
 # Configure the first VM, which acts as a repository.
 config.vm.define "repo" do |repo|
   repo.vm.box = "rdbreak/rhel8repo"
 # Disabled vm.hostname because Vagrant also updates /etc/hosts when using this option.
 #  repo.vm.hostname = "repo.example.com"
-  repo.vm.provision :shell, :inline => "sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config; sudo systemctl restart sshd;", run: "always"
-  repo.vm.provision :shell, :inline => "yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm -y; sudo yum install -y sshpass python3-pip python3-devel httpd sshpass vsftpd createrepo", run: "always"
-  repo.vm.provision :shell, :inline => " python3 -m pip install -U pip ; python3 -m pip install pexpect; python3 -m pip install ansible", run: "always"
+  repo.vm.provision :shell, :inline => "sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config; sudo systemctl restart sshd;", run: "once"
+  repo.vm.provision :shell, :inline => "yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm -y; sudo yum install -y sshpass python3-pip python3-devel httpd sshpass vsftpd createrepo", run: "once"
+  repo.vm.provision :shell, :inline => "python3 -m pip install -U pip; /usr/local/bin/pip3.6 install pexpect; /usr/local/bin/pip3.6 install ansible", run: "once"
   repo.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: "disk-*"
   repo.vm.network "private_network", ip: "192.168.55.199"
 
@@ -141,9 +143,9 @@ config.vm.define "control" do |control|
   control.vm.network "private_network", ip: "192.168.55.200"
   control.vm.provider :virtualbox do |control|
     control.customize ['modifyvm', :id,'--memory', '2048']
-    control.vm.provision "shell",
-      inline: "/bin/bash /vagrant/vagrantup.sh"
-    end
+  end
+  control.vm.provision :shell, inline: "echo exam_version: #{input} > /vagrant/playbooks/vagrant_ansible.yml", run: "always"
+#  control.vm.provision "shell", inline: "/bin/bash /vagrant/vagrantup.sh"
   control.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: "disk-*"
   control.vm.provision :ansible_local do |ansible|
   ansible.playbook = "/vagrant/playbooks/master.yml"
