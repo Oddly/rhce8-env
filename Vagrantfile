@@ -1,7 +1,3 @@
-VAGRANTFILE_API_VERSION = "2"
-VAGRANT_DISABLE_VBOXSYMLINKCREATE = "1"
-# Trigger the script to prompt for exam version.
-
 # All disks that are added as second harddisk to the virtual machines.
 file_to_disk1 = './disk-0-1.vdi'
 file_to_disk2 = './disk-0-2.vdi'
@@ -11,14 +7,15 @@ file_to_disk5 = './disk-0-5.vdi'
 # Define the input variable for use below.
 input = ''
 # Vagrant configuration
-Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+Vagrant.configure(2) do |config|
 # Use same SSH key for each machine
   config.ssh.insert_key = false
   config.vm.box_check_update = false
 # When "vagrant up" is run, ask for which environment version to install.
-  config.trigger.before :up do |t|
-    t.ruby = puts "Select environment version (1 or 2): "
+  config.trigger.before :up do |trigger|
+    trigger.ruby = puts "Select environment version (1 or 2): "
     input = STDIN.gets.chomp
+#    trigger.ignore = [
   end
 # Configure the first VM, which acts as a repository.
 config.vm.define "repo" do |repo|
