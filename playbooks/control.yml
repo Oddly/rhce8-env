@@ -40,16 +40,6 @@
     file:
       state: directory 
       path: /etc/yum.repos.d/
-  - name: Adding repositories to all hosts
-    yum_repository:
-      name: BaseOS
-      baseurl: http://repo.example.com/BaseOS
-      description: BaseOS
-  - name: Adding repositories to all hosts
-    yum_repository:
-      name: AppStream
-      baseurl: http://repo.example.com/AppStream
-      description: AppStream
   - name: Starting Firewalld
     service: 
       name: firewalld 
