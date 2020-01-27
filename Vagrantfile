@@ -147,7 +147,7 @@ config.vm.define "control" do |control|
     control.customize ['modifyvm', :id,'--memory', '2048']
   end
 # Insert the previously selected exam environment into a file to be used by Ansible below.
-  control.vm.provision :shell, inline: "echo exam_version: #{input} > /vagrant/playbooks/vagrant_ansible.yml", run: "always"
+#  control.vm.provision :shell, inline: "echo exam_version: #{input} > /vagrant/playbooks/vagrant_ansible.yml", run: "always"
   control.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: "disk-*", rsync_auto: true, run: "always"
   control.vm.provision :ansible_local, :run => "always" do |ansible|
   ansible.playbook = "/vagrant/playbooks/master.yml"
