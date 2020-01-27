@@ -12,11 +12,13 @@ Vagrant.configure(2) do |config|
   config.ssh.insert_key = false
   config.vm.box_check_update = false
 # When "vagrant up" is run, ask for which environment version to install.
-  config.trigger.before :up do |trigger|
-    trigger.ruby = puts "Select environment version (1 or 2): "
-    input = STDIN.gets.chomp
-#    trigger.ignore = [
-  end
+#  config.trigger.before :up do |trigger|
+#    trigger.ruby do 
+#      puts "Select environment version (1 or 2): "
+#    end
+#  end
+
+#input = STDIN.gets.chomp
 # Configure the first VM, which acts as a repository.
 config.vm.define "repo" do |repo|
   repo.vm.box = "rdbreak/rhel8repo"
