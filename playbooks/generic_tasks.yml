@@ -40,7 +40,7 @@
       key: "{{ pub_key_control.stdout }}"
     when: exam_version == 2
 
-- name: Adding repos and make sudo passwordless
+- name: Adding repos, make sudo passwordless and set locale
   hosts: all
   become: yes 
   become_user: root
@@ -68,7 +68,7 @@
     become_user: root
     when: exam_version == 1 
 
-  - name: Make sudo passwordless on all nodes for the wheel group
+  - name: Make sudo use a password on all nodes for the wheel group
     lineinfile:
       dest: /etc/sudoers
       state: absent
@@ -78,6 +78,13 @@
     become: yes
     become_user: root
     when: exam_version == 2
+
+  - name: Replace the 'Acceptenv' files in the sshd_config file (Prevents locale errors)
+    replace:
+      path: /etc/ssh/sshd_config
+      regexp: '^AcceptEnv'
+      replace: '#AcceptEnv'
+      backup: yes
 
 - name: Making volume group on webserver (200MB)
   hosts: webservers:!node3
