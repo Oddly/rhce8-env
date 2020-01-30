@@ -15,6 +15,20 @@
       copy:
         content: "exam_version: {{exam_version}}"
         dest: ./playbooks/vagrant_ansible.yml
-    - name: Start vagrant up
+    - name: Start deploying machines with Vagrant (can take up to 15 minutes, longer the first time)
       shell: 'vagrant up'
-      
+    - name: Welcome to the RHCE 8 Study/Test Environment!
+      debug:
+        msg:
+          - 'Next Steps: Accessing The Systems:'
+          - '- Control - 192.168.55.200'
+          - '- Node 1 - 192.168.55.201'
+          - '- Node 2 - 192.168.55.202'
+          - '- Node 3 - 192.168.55.203'
+          - '- Node 4 - 192.168.55.204'
+          - '- Node 5 - 192.168.55.205'
+          - '- Username/Password - automation/devops'
+          - '--------------------------------------------------'
+          - '- For root - use `sudo` or `sudo su`'
+          - '- Access example - ssh automation@192.168.55.200'
+          - '- Happy Studying!'           
