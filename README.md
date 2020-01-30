@@ -1,15 +1,5 @@
 # RHCE 8 Practice environment
 _Powered by Ansible and Vagrant_ 
-## Usage
-
-1. Run `vagrant up` to deploy the environment. Downloads approximately 7 GiB the first time. The installer will ask you which version you want to install. 
-Version differences are:
-	- **Version 1**: Everything is set up, user `automation` has passwordless sudo and SSH access on control and the nodes.
-	- **Version 2**:  User `automation` does not have passwordless SSH and sudo access on the nodes.
-2. Run `vagrant destroy -f node1 node2 node3 node4 node5` to destroy all nodes and run `vagrant up` to bring them back up, clean installed. 
-3. `vagrant destroy -f` removes all machines (without confirmation!)
-
-
 
 ## Installation options:
 ### macOS
@@ -20,6 +10,15 @@ _Gatekeeper can block virtualbox from installing. All you have to do is go into 
 3. Change to the `rhce8-env` directory that is now in your `/opt` directory.
 4. Run the following code:   
 `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" && xcode-select --install &&brew install ansible ; brew install python ; brew cask install vagrant ; brew cask install VirtualBox ; brew cask install virtualbox-extension-pack ; vagrant plugin install vagrant-guest_ansible ; ./patch`
+
+### Usage on macOS
+
+1. Run `ansible-playbook -i localhost, vagrant.yml` to deploy the environment. Downloads approximately 7 GiB the first time. The installer will ask you which version you want to install.
+Version differences are:
+        - **Version 1**: Everything is set up, user `automation` has passwordless sudo and SSH access on control and the nodes.
+        - **Version 2**:  User `automation` does not have passwordless SSH and sudo access on the nodes.
+2. Run `vagrant destroy -f node1 node2 node3 node4 node5` to destroy all nodes and run `vagrant up` to bring them back up, clean installed.
+3. `vagrant destroy -f` removes all machines (without confirmation!)
 
 ##### Alternatively, you can install everything individually below.
 - [Install the Latest Version of Vagrant](https://www.vagrantup.com/downloads.html) - (`brew cask install vagrant`)
@@ -35,6 +34,14 @@ systemctl stop packagekit; yum install -y epel-release && yum install -y git bin
 ```
 ##### Also, install the Virtualbox extension pack below
 - [Install the Virtual Box Extension Pack](https://www.virtualbox.org/wiki/Downloads)
+
+### Usage on CentOS7/RHEL7/Manjaro/Arch
+1. Run `vagrant up` to deploy the environment. Downloads approximately 7 GiB the first time. You can specify which version you want to install in the file `playbooks/vagrant_ansible.yml`.
+Version differences are:
+        - **Version 1**: Everything is set up, user `automation` has passwordless sudo and SSH access on control and the nodes.
+        - **Version 2**:  User `automation` does not have passwordless SSH and sudo access on the nodes.
+2. Run `vagrant destroy -f node1 node2 node3 node4 node5` to destroy all nodes and run `vagrant up` to bring them back up, clean installed.
+3. `vagrant destroy -f` removes all machines (without confirmation!)
 
 ### Windows/RHEL 8/Fedora 30
 - [Install the Latest Version of Vagrant](https://www.vagrantup.com/downloads.html)
