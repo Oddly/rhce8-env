@@ -1,0 +1,20 @@
+---
+- name: Exam version
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  become: yes
+  become_user: samcrauwels
+  vars_prompt:
+    - name: "exam_version"
+      prompt: "Which version would you like to install? (1 or 2):"
+      default: 1
+      private: no
+  tasks:
+    - name: Save exam_version to file
+      copy:
+        content: "exam_version: {{exam_version}}"
+        dest: ./playbooks/vagrant_ansible.yml
+    - name: Start vagrant up
+      shell: 'vagrant up'
+      
