@@ -15,8 +15,10 @@ _Gatekeeper can block virtualbox from installing. All you have to do is go into 
 
 1. Run `ansible-playbook -i localhost, vagrant.yml` to deploy the environment. Downloads approximately 7 GiB the first time. The installer will ask you which version you want to install.
 Version differences are:
-        - **Version 1**: Everything is set up, user `automation` has passwordless sudo and SSH access on control and the nodes.
-        - **Version 2**:  User `automation` does not have passwordless SSH and sudo access on the nodes.
+
+- **Version 1**: Everything is set up, user `automation` has passwordless sudo and SSH access on control and the nodes.
+- **Version 2**:  User `automation` does not have passwordless SSH and sudo access on the nodes.
+
 2. Run `vagrant destroy -f node1 node2 node3 node4 node5` to destroy all nodes and run `vagrant up` to bring them back up, clean installed.
 3. `vagrant destroy -f` removes all machines (without confirmation!)
 
