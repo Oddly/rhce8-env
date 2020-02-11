@@ -1,9 +1,4 @@
 #!/bin/zsh
-# This fixes a bug in Vagrant where it doesn't recognize Virtualbox 6.1. Should be fixed in Vagrant 2.2.7.
-curl https://github.com/briancain/vagrant/commit/fb4e6985e142da56bad143d70600cd3695c91757.patch > /tmp/vagrant_226_virtualbox_610.patch
-cd /opt/vagrant/embedded/gems/2.2.6/gems/vagrant-2.2.6 || exit
-sudo git apply --verbose --exclude='website/*' /tmp/vagrant_226_virtualbox_610.patch
-
 # Check if boxes.tar exists and extract to ~/.vagrant.d/boxes/ if it does, download and extract it if it doesn't..
  
 boxes_location=http://10.20.29.84:8081
