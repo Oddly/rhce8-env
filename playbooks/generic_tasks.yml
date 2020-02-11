@@ -33,7 +33,7 @@
       key: "{{ pub_key_control.stdout }}"
     when: exam_version == 1
 
-  - name: Distribute the public key of control on the nodes
+  - name: Remove the public key of control on the nodes
     authorized_key:
       user: automation
       state: absent
