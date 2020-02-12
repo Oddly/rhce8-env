@@ -13,7 +13,7 @@ _Gatekeeper can block virtualbox from installing. All you have to do is go into 
 
 ### Usage on macOS
 
-1. Run `ansible-playbook -i localhost, vagrant.yml` to deploy the environment. Downloads approximately 7 GiB the first time. The installer will ask you which version you want to install.
+1. Run `ansible-playbook -i localhost, vagrant.yml -K` to deploy the environment, you will need to provide your password. Downloads approximately 7 GiB the first time. The installer will ask you which version you want to install.
 Version differences are:
 
 - **Version 1**: Everything is set up, user `automation` has passwordless sudo and SSH access on control and the nodes.
