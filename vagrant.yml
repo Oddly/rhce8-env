@@ -3,8 +3,7 @@
   hosts: localhost
   connection: local
   gather_facts: no
-  become: yes
-  become_user: samcrauwels
+  become: yes 
   vars_prompt:
     - name: "exam_version"
       prompt: "Which version would you like to install? (1 or 2):"

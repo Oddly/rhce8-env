@@ -6,7 +6,7 @@
     expect:
       command: ssh automation@node1.example.com 
       responses:
-        'Are you sure you want to continue connecting': 'yes'
+        'Are you sure you want to continue connecting (yes/no)?': 'yes'
       timeout: 5
     become: yes
     become_user: automation
@@ -16,7 +16,7 @@
     expect:
       command: ssh automation@node2.example.com 
       responses:
-        'Are you sure you want to continue connecting': 'yes'
+        'Are you sure you want to continue connecting (yes/no)': 'yes'
       timeout: 5
     become: yes
     become_user: automation
@@ -26,7 +26,7 @@
     expect:
       command: ssh automation@node3.example.com 
       responses:
-        'Are you sure you want to continue connecting': 'yes'
+        'Are you sure you want to continue connecting (yes/no)?': 'yes'
       timeout: 5
     become: yes
     become_user: automation
@@ -36,7 +36,7 @@
     expect:
       command: ssh automation@node4.example.com
       responses:
-        'Are you sure you want to continue connecting': 'yes'
+        'Are you sure you want to continue connecting (yes/no)?': 'yes'
       timeout: 5
     become: yes
     become_user: automation
@@ -46,7 +46,7 @@
     expect:
       command: ssh automation@node5.example.com
       responses:
-        'Are you sure you want to continue connecting': 'yes'
+        'Are you sure you want to continue connecting (yes/no)?': 'yes'
       timeout: 5
     become: yes
     become_user: automation
