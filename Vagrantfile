@@ -25,7 +25,7 @@ config.vm.define "repo" do |repo|
 # Disabled vm.hostname because Vagrant also updates /etc/hosts when using this option.
 #  repo.vm.hostname = "repo.example.com"
   repo.vm.provision :shell, :inline => "sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config; sudo systemctl restart sshd;", run: "once"
-  repo.vm.provision :shell, :inline => "yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm -y; sudo yum install -y sshpass python3-pip python3-devel httpd sshpass vsftpd createrepo", run: "once"
+  repo.vm.provision :shell, :inline => "yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm -y; sudo yum install -y sshpass python3-pip python3-devel httpd sshpass vsftpd createrepo policycoreutils-python-utils", run: "once"
   repo.vm.provision :shell, :inline => "python3 -m pip install -U pip; /usr/local/bin/pip3.6 install pexpect; /usr/local/bin/pip3.6 install ansible", run: "once"
   repo.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: "disk-*"
   repo.vm.network "private_network", ip: "192.168.55.199"
