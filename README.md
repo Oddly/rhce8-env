@@ -1,28 +1,30 @@
 # RHCE 8 Practice environment
 _Powered by Ansible and Vagrant_ 
 
-## Installation options:
-### macOS
-_Gatekeeper can block virtualbox from installing. All you have to do is go into Security & Privacy of System Preferences and click Allow under the General tab and rerun installation._
-##### Next steps: 
-1. Cd to your home directory `cd /opt`.  (The directory doesn't have to be `/opt`, it can be anything you want.)
-2. Clone the environment repo `git clone https://github.com/Oddly/rhce8-env.git`
-3. Change to the `rhce8-env` directory that is now in your `/opt` directory.
-4. Run the following code:   
+## macOS
+
+#### Installation
+
+_Gatekeeper can block virtualbox from installing. All you have to do is go into Security & Privacy of System Preferences and click Allow under the General tab and rerun the installation._
+
+1. Cd to the target directory: `cd /opt`.  (The location doesn't have to be `/opt`, it can be anything you want.)
+2. Clone the environment repo: `git clone https://github.com/Oddly/rhce8-env.git`
+3. Change to the `rhce8-env` directory that is now in your `/opt` directory: `cd rhce8-env`
+4. Run the following code:
 `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" && xcode-select --install &&brew install ansible ; brew install python ; brew cask install vagrant ; brew cask install VirtualBox ; brew cask install virtualbox-extension-pack ; vagrant plugin install vagrant-guest_ansible ;`
 
-### Usage on macOS
+#### Usage
 
-1. Run `ansible-playbook -i localhost, vagrant.yml -K` to deploy the environment, you will need to provide your password. Downloads approximately 7 GiB the first time. The installer will ask you which version you want to install.
+1. Run `ansible-playbook -i localhost, vagrant.yml -K` to deploy the environment, you will need to provide your password. Downloads approximately 7 GiB the first time and this will take a while (without seeing progress). The installer will eventually ask you which version you want to install.
 Version differences are:
 
 	- **Version 1**: Everything is set up, user `automation` has passwordless sudo and SSH access on control and the nodes.
-	- **Version 2**:  User `automation` does not have passwordless SSH and sudo access on the nodes.
+	- **Version 2**:  User `automation` does not have passwordless SSH and sudo access on the nodes. The password is `devops`.
 
-If you want to use version 1 and see the output of Vagrant, you can substitute the ansible-playbook command with `vagrant up`.
+If you want to use version 1 and you want see the output of Vagrant, you can substitute the ansible-playbook command with `vagrant up`.
 
 2. Run `vagrant destroy -f node1 node2 node3 node4 node5` to destroy all nodes and run `vagrant up` to bring them back up, clean installed.
-3. `vagrant destroy -f` removes all machines (without confirmation!)
+3. `vagrant destroy -f` removes all (including control and repo) machines (without confirmation!)
 
 ##### Alternatively, you can install everything individually below.
 - [Install the Latest Version of Vagrant](https://www.vagrantup.com/downloads.html) - (`brew cask install vagrant`)
