@@ -89,11 +89,6 @@
       mode: 0755
       owner: vagrant
       group: vagrant 
-  - name: Creating Welcome Message
-    file:
-      path: /etc/profile.d/welcome.sh
-      state: touch
-      mode: 0755
   - name: Create /etc/ansible directory
     file:
       path: /etc/ansible
@@ -102,18 +97,3 @@
     copy:
       src: ansible.cfg.j2
       dest: /etc/ansible/ansible.cfg
-  - name: Building Welcome Message
-    blockinfile:
-      dest: /etc/profile.d/welcome.sh
-      block: |
-        #!/bin/bash
-        #
-        echo -e '       
-        You are logged into \"`hostname`\" as user \"`whoami`\"
-        This system is running `cat /etc/redhat-release`
-        kernel is `uname -r`
-       
-      
-        Repo/AppStream 
-        Available to use from http://repo.example.com/BaseOS and http://repo.example.com/AppStream
-        '

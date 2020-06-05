@@ -72,22 +72,7 @@
   - name: Starting services
     service: name=firewalld state=started
     tags: repo
-  - name: Creating Welcome Message
-    file:
-      path: /etc/profile.d/welcome.sh
-      state: touch
-      mode: 0755
   - name: Erasing Repos
     shell: rm -rf /etc/yum.repos.d/*
-  - name: Building Welcome Message
-    blockinfile:
-      dest: /etc/profile.d/welcome.sh
-      block: |
-         #!/bin/bash
-         #
-         echo -e '       
-         You are logged into \"`hostname`\" as user \"`whoami`\"
-         This system is running `cat /etc/redhat-release`
-         kernel is `uname -r`
-         '
+
 ...
