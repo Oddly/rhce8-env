@@ -109,11 +109,11 @@
         #!/bin/bash
         #
         echo -e '       
-        # You are logged into \"`hostname`\" as user \"`whoami`\"
-        # This system is running `cat /etc/redhat-release`
-        # kernel is `uname -r`
-        #
-        #
-        # Repo/AppStream 
-        # Available to use from http://repo.example.com/BaseOS and http://repo.example.com/AppStream
-        "
+        You are logged into \"`hostname`\" as user \"`whoami`\"
+        This system is running `cat /etc/redhat-release`
+        kernel is `uname -r`
+       
+      
+        Repo/AppStream 
+        Available to use from http://repo.example.com/BaseOS and http://repo.example.com/AppStream
+        '
