@@ -31,7 +31,7 @@ config.vm.define "repo" do |repo|
   repo.vm.network "private_network", ip: "192.168.55.199"
 
   repo.vm.provider "virtualbox" do |repo|
-    repo.memory = "512"
+    repo.memory = "1024"
   end
 end
 
@@ -41,7 +41,7 @@ config.vm.define "node1" do |node1|
   node1.vm.network "private_network", ip: "192.168.55.201"
   node1.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: "disk-*"
   node1.vm.provider "virtualbox" do |node1|
-    node1.memory = "512"
+    node1.memory = "1024"
 
     if not File.exist?(file_to_disk1)
       node1.customize ['createhd', '--filename', file_to_disk1, '--variant', 'Fixed', '--size', 5 * 1024]
@@ -62,7 +62,7 @@ config.vm.define "node2" do |node2|
   node2.vm.network "private_network", ip: "192.168.55.202"
   node2.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: "disk-*"
   node2.vm.provider "virtualbox" do |node2|
-    node2.memory = "512"
+    node2.memory = "1024"
 
     if not File.exist?(file_to_disk2)
       node2.customize ['createhd', '--filename', file_to_disk2, '--variant', 'Fixed', '--size', 2 * 100]
@@ -82,7 +82,7 @@ config.vm.define "node3" do |node3|
   node3.vm.network "private_network", ip: "192.168.55.203"
   node3.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: "disk-*"
   node3.vm.provider "virtualbox" do |node3|
-    node3.memory = "512"
+    node3.memory = "1024"
 
     if not File.exist?(file_to_disk3)
       node3.customize ['createhd', '--filename', file_to_disk3, '--variant', 'Fixed', '--size', 5 * 100]
@@ -103,7 +103,7 @@ config.vm.define "node4" do |node4|
   node4.vm.network "private_network", ip: "192.168.55.204"
   node4.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: "disk-*"
   node4.vm.provider "virtualbox" do |node4|
-    node4.memory = "512"
+    node4.memory = "1024"
 
     if not File.exist?(file_to_disk4)
       node4.customize ['createhd', '--filename', file_to_disk4, '--variant', 'Fixed', '--size', 2 * 100]
@@ -124,7 +124,7 @@ config.vm.define "node5" do |node5|
   node5.vm.network "private_network", ip: "192.168.55.205"
   node5.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: "disk-*"
   node5.vm.provider "virtualbox" do |node5|
-    node5.memory = "512"
+    node5.memory = "1024"
 
     if not File.exist?(file_to_disk5)
       node5.customize ['createhd', '--filename', file_to_disk5, '--variant', 'Fixed', '--size', 5 * 1024]
