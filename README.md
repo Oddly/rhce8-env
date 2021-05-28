@@ -1,5 +1,5 @@
 # RHCE 8 Practice environment
-_Powered by Ansible and Vagrant_ 
+_Powered by Ansible and Vagrant
 
 ## macOS
 
@@ -11,7 +11,7 @@ _Gatekeeper can block virtualbox from installing. All you have to do is go into 
 2. Clone the environment repo: `git clone https://github.com/Oddly/rhce8-env.git`
 3. Change to the `rhce8-env` directory that is now in your `/opt` directory: `cd rhce8-env`
 4. Run the following code:
-`/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" && xcode-select --install &&brew install ansible ; brew install python ; brew cask install vagrant ; brew cask install VirtualBox ; brew cask install virtualbox-extension-pack ; vagrant plugin install vagrant-guest_ansible ;`
+`/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" && xcode-select --install &&brew install ansible ; brew install python ; brew install vagrant ; brew install VirtualBox ; brew install virtualbox-extension-pack ; vagrant plugin install vagrant-guest_ansible ;`
 
 #### Usage
 
