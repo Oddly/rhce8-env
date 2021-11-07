@@ -1,6 +1,8 @@
 # RHCE 8 Practice environment
 _Powered by Ansible and Vagrant
 
+IMPORTANT! Due to a change in a recent Virtualbox update, you need to do a manual edit to make this happen. See https://github.com/Oddly/rhce8-env/issues/1#issue-1046757903 .
+
 ## macOS
 
 #### Installation
