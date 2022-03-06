@@ -7,19 +7,19 @@
   - name: Setting Hostname
     command: hostnamectl set-hostname repo.example.com
   - name: Configuring network
-    shell: nmcli con mod "System eth1" ipv4.addresses 192.168.55.199/24 ipv4.gateway 192.168.55.1 ipv4.dns 8.8.8.8 ipv4.method manual
+    shell: nmcli con mod "System eth1" ipv4.addresses 192.168.56.199/24 ipv4.gateway 192.168.56.1 ipv4.dns 8.8.8.8 ipv4.method manual
   - name: Adding all addresses to hosts file.
     copy:
       content: |
         127.0.0.1    localhost.localdomain localhost
         ::1          localhost6.localdomain6 localhost6
-        192.168.55.199 repo.example.com repo
-        192.168.55.200 control.example.com control
-        192.168.55.201 node1.example.com node1
-        192.168.55.202 node2.example.com node2
-        192.168.55.203 node3.example.com node3
-        192.168.55.204 node4.example.com node4
-        192.168.55.205 node5.example.com node5
+        192.168.56.199 repo.example.com repo
+        192.168.56.200 control.example.com control
+        192.168.56.201 node1.example.com node1
+        192.168.56.202 node2.example.com node2
+        192.168.56.203 node3.example.com node3
+        192.168.56.204 node4.example.com node4
+        192.168.56.205 node5.example.com node5
       dest: /etc/hosts
   
   - name: Enabling services
