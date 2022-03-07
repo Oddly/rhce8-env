@@ -16,7 +16,7 @@
     expect:
       command: ssh automation@node2.example.com 
       responses:
-        'Are you sure you want to continue connecting (yes/no)': 'yes'
+        'Are you sure you want to continue connecting (yes/no)?': 'yes'
       timeout: 5
     become: yes
     become_user: automation
